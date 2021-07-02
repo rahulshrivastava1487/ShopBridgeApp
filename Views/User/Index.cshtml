@@ -1,0 +1,118 @@
+﻿@model ShopBridge.Models.UserModel
+
+@{
+    Layout = null;
+    ViewBag.Title = "Index";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>User Enrollment</title>
+    <link href="~/Content/bootstrap4_1_1.min.css" rel="stylesheet" id="bootstrap-css" />
+    <script src="~/Content/bootstrap4_1_1.min.js"></script>
+    <script src="~/Content/jquery3_2_1.min.js"></script>
+    <link href="~/Content/StyleSheet.css" rel="stylesheet" />
+</head>
+<body>
+    @using (Html.BeginForm("Index", "User", FormMethod.Post))
+    {
+        <div class="container register">
+            <div class="row">
+                <div class="col-md-5 register-left">
+                    <img src="~/Content/clipart1364843.png" alt=""/>
+                    <h3>Welcome to ShopBridge!</h3>
+                    <p>
+                        You can enroll yourself by filling up the form alongside. Already enrolled? Can proceed with login.
+                    </p>
+                </div>
+                <div class="col-md-7 register-right">
+                    <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="../User/Index" role="tab" aria-controls="home" aria-selected="true">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="../Login/Index" role="tab" aria-controls="profile" aria-selected="false">Login</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <h3 class="register-heading">User Enrollment</h3>
+                            <div class="row register-form">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(e => e.FirstName, new { @class = "form-control", placeholder = "First Name *" })
+                                        @Html.ValidationMessageFor(e => e.FirstName)
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(e => e.MiddleName, new { @class = "form-control", placeholder = "Middle Name" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(e => e.LastName, new { @class = "form-control", placeholder = "Last Name *" })
+                                        @Html.ValidationMessageFor(e => e.LastName)
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(e => e.UserName, new { @class = "form-control", placeholder = "User Name *" })
+                                        @Html.ValidationMessageFor(e => e.UserName)
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.PasswordFor(e => e.UserPassword, new { id = "Password", @class = "form-control", placeholder = "Password *" })
+                                        <span id="result"></span>
+                                        @Html.ValidationMessageFor(e => e.UserPassword)
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.PasswordFor(e => e.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password *" })
+                                        @Html.ValidationMessageFor(e => e.ConfirmPassword)
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(e => e.EmailID, new { @class = "form-control", placeholder = "Your Email *" })
+                                        @Html.ValidationMessageFor(e => e.EmailID)
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(e => e.MobileNumber, new { @class = "form-control", placeholder = "Your Phone" })
+                                        @Html.ValidationMessageFor(e => e.MobileNumber)
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(e => e.AddressLine1, new { @class = "form-control", placeholder = "Address Line 1" })
+                                        @Html.ValidationMessageFor(e => e.AddressLine1)
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(e => e.AddressLine2, new { @class = "form-control", placeholder = "Address Line 2" })
+                                        @Html.ValidationMessageFor(e => e.AddressLine2)
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(e => e.City, new { @class = "form-control", placeholder = "Your City" })
+                                        @Html.ValidationMessageFor(e => e.City)
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(e => e.State, new { @class = "form-control", placeholder = "Your State" })
+                                        @Html.ValidationMessageFor(e => e.State)
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(e => e.ZipCode, new { @class = "form-control", placeholder = "Your Zip Code" })
+                                        @Html.ValidationMessageFor(e => e.ZipCode)
+                                    </div>
+                                    <input type="submit" class="btnRegister" value="Register" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript">
+                $(function () {
+                    var msg = '@ViewData["Result"]';
+                    if (msg == '1') {
+                        alert("User Details Inserted Successfully");
+                        window.location.href = "@Url.Action("Index", "User")";
+                    }
+                });
+            </script>            
+        </div>
+    }
+</body>
+</html>

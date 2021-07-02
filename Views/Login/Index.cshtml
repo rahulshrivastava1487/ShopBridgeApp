@@ -1,0 +1,93 @@
+﻿@model ShopBridge.Models.UserModel
+
+@{
+    Layout = null;
+    ViewBag.Title = "Index";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>User Login</title>
+    <link href="~/Content/bootstrap4_1_1.min.css" rel="stylesheet" id="bootstrap-css" />
+    <script src="~/Content/bootstrap4_1_1.min.js"></script>
+    <script src="~/Content/jquery3_2_1.min.js"></script>
+    <link href="~/Content/StyleSheet.css" rel="stylesheet" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                type: 'POST',
+                URL: '/Login/Index',
+                data: data,
+                dataType: 'JSON',
+                success: function (data) {
+                    datadata = data.status
+                    if (Status == "1") {
+                        window.location.href = '@Url.Action("Index","Login")';
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    @using (Html.BeginForm("Index", "Login", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="container register">
+            <div class="row">
+                <div class="col-md-5 register-left">
+                    <img src="~/Content/clipart1364843.png" alt="" />
+                    <h3>Welcome to ShopBridge!</h3>
+                    <p>
+                        You can enroll yourself by filling up the form alongside. Already enrolled? Can proceed with login.
+                    </p>
+                </div>
+                <div class="col-md-7 register-right">
+                    <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="../User/Index" role="tab" aria-controls="home" aria-selected="true">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="../Login/Index" role="tab" aria-controls="profile" aria-selected="false">Login</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <h3 class="register-heading">Admin Login</h3>
+                            <div class="row register-form">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(e => e.UserName, new { @class = "form-control", placeholder = "User Name *" })
+                                        @Html.ValidationMessageFor(e => e.UserName)
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.PasswordFor(e => e.UserPassword, new { id = "Password", @class = "form-control", placeholder = "Password *" })
+                                        <span id="result"></span>
+                                        @Html.ValidationMessageFor(e => e.UserPassword)
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="submit" class="btnLogin" value="Login" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script type="text/javascript">
+                $(function () {
+                    var msg = '@ViewData["Result"]';
+                    if (msg == '1') {
+                        alert("User Details Inserted Successfully");
+                        window.location.href = "@Url.Action("Index", "Login")";
+                    }
+                });
+            </script>
+        </div>
+    }
+</body>
+</html>
