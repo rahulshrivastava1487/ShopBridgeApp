@@ -11,108 +11,249 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>User Enrollment</title>
-    <link href="~/Content/bootstrap4_1_1.min.css" rel="stylesheet" id="bootstrap-css" />
-    <script src="~/Content/bootstrap4_1_1.min.js"></script>
     <script src="~/Content/jquery3_2_1.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link href="~/Content/StyleSheet.css" rel="stylesheet" />
-</head>
-<body>
-    @using (Html.BeginForm("Index", "User", FormMethod.Post))
-    {
-        <div class="container register">
-            <div class="row">
-                <div class="col-md-5 register-left">
-                    <img src="~/Content/clipart1364843.png" alt=""/>
-                    <h3>Welcome to ShopBridge!</h3>
-                    <p>
-                        You can enroll yourself by filling up the form alongside. Already enrolled? Can proceed with login.
-                    </p>
-                </div>
-                <div class="col-md-7 register-right">
-                    <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="../User/Index" role="tab" aria-controls="home" aria-selected="true">Register</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="../Login/Index" role="tab" aria-controls="profile" aria-selected="false">Login</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                            <h3 class="register-heading">User Enrollment</h3>
-                            <div class="row register-form">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.TextBoxFor(e => e.FirstName, new { @class = "form-control", placeholder = "First Name *" })
-                                        @Html.ValidationMessageFor(e => e.FirstName)
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.TextBoxFor(e => e.MiddleName, new { @class = "form-control", placeholder = "Middle Name" })
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.TextBoxFor(e => e.LastName, new { @class = "form-control", placeholder = "Last Name *" })
-                                        @Html.ValidationMessageFor(e => e.LastName)
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.TextBoxFor(e => e.UserName, new { @class = "form-control", placeholder = "User Name *" })
-                                        @Html.ValidationMessageFor(e => e.UserName)
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.PasswordFor(e => e.UserPassword, new { id = "Password", @class = "form-control", placeholder = "Password *" })
-                                        <span id="result"></span>
-                                        @Html.ValidationMessageFor(e => e.UserPassword)
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.PasswordFor(e => e.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password *" })
-                                        @Html.ValidationMessageFor(e => e.ConfirmPassword)
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.TextBoxFor(e => e.EmailID, new { @class = "form-control", placeholder = "Your Email *" })
-                                        @Html.ValidationMessageFor(e => e.EmailID)
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.TextBoxFor(e => e.MobileNumber, new { @class = "form-control", placeholder = "Your Phone" })
-                                        @Html.ValidationMessageFor(e => e.MobileNumber)
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.TextBoxFor(e => e.AddressLine1, new { @class = "form-control", placeholder = "Address Line 1" })
-                                        @Html.ValidationMessageFor(e => e.AddressLine1)
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.TextBoxFor(e => e.AddressLine2, new { @class = "form-control", placeholder = "Address Line 2" })
-                                        @Html.ValidationMessageFor(e => e.AddressLine2)
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.TextBoxFor(e => e.City, new { @class = "form-control", placeholder = "Your City" })
-                                        @Html.ValidationMessageFor(e => e.City)
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.TextBoxFor(e => e.State, new { @class = "form-control", placeholder = "Your State" })
-                                        @Html.ValidationMessageFor(e => e.State)
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.TextBoxFor(e => e.ZipCode, new { @class = "form-control", placeholder = "Your Zip Code" })
-                                        @Html.ValidationMessageFor(e => e.ZipCode)
-                                    </div>
-                                    <input type="submit" class="btnRegister" value="Register" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <script type="text/javascript">
-                $(function () {
-                    var msg = '@ViewData["Result"]';
-                    if (msg == '1') {
-                        alert("User Details Inserted Successfully");
-                        window.location.href = "@Url.Action("Index", "User")";
+    <link href="~/Content/RegistrationForm.css" rel="stylesheet" />
+    <script type="text/javascript">
+        function fnRegisterUser() {
+            var bFlag = true;
+            $("#lblMessage").hide();
+
+            if ($("#FirstName").val() == "") {
+                bFlag = false;
+                $("#FirstName").css("border-color", "orangered");
+            }
+
+            if ($("#LastName").val() == "") {
+                bFlag = false;
+                $("#LastName").css("border-color", "orangered");
+            }
+
+            if ($("#EmailID").val() == "") {
+                bFlag = false;
+                $("#EmailID").css("border-color", "orangered");
+            }
+
+            if ($("#UserName").val() == "") {
+                bFlag = false;
+                $("#UserName").css("border-color", "orangered");
+            }
+
+            if ($("#UserPassword").val() == "") {
+                bFlag = false;
+                $("#UserPassword").css("border-color", "orangered");
+            }
+
+            if ($("#ConfirmPassword").val() == "") {
+                bFlag = false;
+                $("#ConfirmPassword").css("border-color", "orangered");
+            }
+
+            if ($("#UserPassword").val().length < 8) {
+                bFlag = false;
+                $("#UserPassword").css("border-color", "orangered");
+                $("#lblMessage").text("Password should be minimum 8 characters long.");
+                $("#lblMessage").css("color", "orangered");
+                $("#lblMessage").show();
+                return false;
+            }
+
+            if ($("#ConfirmPassword").val() != $("#UserPassword").val()) {
+                bFlag = false;
+                $("#UserPassword").css("border-color", "orangered");
+                $("#ConfirmPassword").css("border-color", "orangered");
+                $("#lblMessage").text("Both passwords do not match.");
+                $("#lblMessage").css("color", "orangered");
+                $("#lblMessage").show();
+                return false;
+            }
+
+            if (bFlag) {
+                var userObj = {
+                    FirstName: $('#FirstName').val(),
+                    MiddleName: $('#MiddleName').val(),
+                    LastName: $('#LastName').val(),
+                    EmailID: $('#EmailID').val(),
+                    UserName: $('#UserName').val(),
+                    UserPassword: $('#UserPassword').val(),
+                    MobileNumber: $('#MobileNumber').val(),
+                    AddressLine1: $('#AddressLine1').val(),
+                    AddressLine2: $('#AddressLine2').val(),
+                    City: $('#City').val(),
+                    State: $('#State').val(),
+                    ZipCode: $('#ZipCode').val(),
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/User/AddUser',
+                    data: JSON.stringify(userObj),
+                    contentType: "application/json;charset=utf-8",
+                    dataType: 'json',
+                    success: function (result) {
+                        $("#lblMessage").text("User registered successfully!");
+                        $("#lblMessage").css("color", "green");
+                        $("#lblMessage").show();
+
+                        $('#FirstName').val("");
+                        $('#MiddleName').val("");
+                        $('#LastName').val("");
+                        $('#EmailID').val("");
+                        $('#UserName').val("");
+                        $('#UserPassword').val("");
+                        $("#ConfirmPassword").val("");
+                        $('#MobileNumber').val("");
+                        $('#AddressLine1').val("");
+                        $('#AddressLine2').val("");
+                        $('#City').val("");
+                        $('#State').val("");
+                        $('#ZipCode').val("");
                     }
                 });
-            </script>            
+            }
+            else {
+                $("#lblMessage").text("Please fill out the mandatory fields.");
+                $("#lblMessage").css("color", "orangered");
+                $("#lblMessage").show();
+            }
+        };
+
+        function fnSignIn() {
+            var url = '@Url.Action("Index", "Login")';
+            window.location.href = url;
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="row py-5 mt-4 align-items-center">
+            <div class="col-md-5 pr-lg-5 mb-5 mb-md-0">
+                <img src="~/Content/ECommerceSmall.png" alt="" class="img-fluid mb-3 d-none d-md-block">
+                <h1><p class="text-muted font-weight-bold">Create your account</p></h1>
+            </div>
+            <div class="col-md-7 col-lg-6 ml-auto">
+                <form action="#">
+                    <div class="row">
+                        <div class="input-group col-lg-6 mb-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                    <i class="fa fa-user text-muted"></i>
+                                </span>
+                            </div>
+                            <input id="FirstName" type="text" name="FirstName" placeholder="First Name *" class="form-control bg-white border-left-0 border-md">
+                        </div>
+                        <div class="input-group col-lg-6 mb-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                    <i class="fa fa-user text-muted"></i>
+                                </span>
+                            </div>
+                            <input id="LastName" type="text" name="LastName" placeholder="Last Name *" class="form-control bg-white border-left-0 border-md">
+                        </div>
+                        <div class="input-group col-lg-12 mb-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                    <i class="fa fa-envelope text-muted"></i>
+                                </span>
+                            </div>
+                            <input id="EmailID" type="email" name="EmailID" placeholder="Email ID *" class="form-control bg-white border-left-0 border-md">
+                        </div>
+                        <div class="input-group col-lg-12 mb-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                    <i class="fa fa-address-card text-muted"></i>
+                                </span>
+                            </div>
+                            <input id="AddressLine1" type="text" name="AddressLine1" placeholder="Address Line 1" class="form-control bg-white border-left-0 border-md">
+                        </div>
+                        <div class="input-group col-lg-12 mb-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                    <i class="fa fa-address-card text-muted"></i>
+                                </span>
+                            </div>
+                            <input id="AddressLine2" type="text" name="AddressLine2" placeholder="Address Line 2" class="form-control bg-white border-left-0 border-md">
+                        </div>
+                        <div class="input-group col-lg-12 mb-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                    <i class="fa fa-address-card text-muted"></i>
+                                </span>
+                            </div>
+                            <input id="City" type="text" name="City" placeholder="City" class="form-control bg-white border-left-0 border-md">
+                        </div>
+                        <div class="input-group col-lg-12 mb-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                    <i class="fa fa-address-card text-muted"></i>
+                                </span>
+                            </div>
+                            <input id="State" type="text" name="State" placeholder="State" class="form-control bg-white border-left-0 border-md">
+                        </div>
+                        <div class="input-group col-lg-12 mb-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                    <i class="fa fa-address-card text-muted"></i>
+                                </span>
+                            </div>
+                            <input id="ZipCode" type="number" maxlength="6" name="ZipCode" placeholder="ZipCode" class="form-control bg-white border-left-0 border-md">
+                        </div>
+                        <div class="input-group col-lg-12 mb-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                    <i class="fa fa-phone-square text-muted"></i>
+                                </span>
+                            </div>
+                            <select id="countryCode" name="countryCode" style="max-width: 80px" class="custom-select form-control bg-white border-left-0 border-md h-100 font-weight-bold text-muted">
+                                <option value="">+91</option>
+                            </select>
+                            <input id="MobileNumber" type="tel" name="MobileNumber" placeholder="Mobile Number" class="form-control bg-white border-md border-left-0 pl-3">
+                        </div>
+                        <div class="input-group col-lg-12 mb-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                    <i class="fa fa-user text-muted"></i>
+                                </span>
+                            </div>
+                            <input type="text" id="UserName" name="UserName" placeholder="User Name *" class="form-control bg-white border-md border-left-0 pl-3" />
+                        </div>
+                        <div class="input-group col-lg-6 mb-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                    <i class="fa fa-lock text-muted"></i>
+                                </span>
+                            </div>
+                            <input id="UserPassword" type="password" name="Password" placeholder="Password *" class="form-control bg-white border-left-0 border-md">
+                        </div>
+                        <div class="input-group col-lg-6 mb-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                    <i class="fa fa-lock text-muted"></i>
+                                </span>
+                            </div>
+                            <input id="ConfirmPassword" type="password" name="ConfirmPassword" placeholder="Confirm Password *" class="form-control bg-white border-left-0 border-md">
+                        </div>
+                        <div class="input-group col-lg-12 mb-4">
+                            <label id="lblMessage"></label>
+                        </div>
+                        <div class="form-group col-lg-12 mx-auto mb-0">
+                            <a href="#" class="btn btn-primary btn-block py-2" onclick="fnRegisterUser();">
+                                <span class="font-weight-bold">Create your account</span>
+                            </a>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="text-center w-100">
+                            <p class="text-muted font-weight-bold">Already Registered? <a href="#" class="text-primary ml-2" onclick="fnSignIn();">Login</a></p>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
         </div>
-    }
+    </div>
 </body>
 </html>

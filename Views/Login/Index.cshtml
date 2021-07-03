@@ -11,83 +11,122 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>User Login</title>
-    <link href="~/Content/bootstrap4_1_1.min.css" rel="stylesheet" id="bootstrap-css" />
-    <script src="~/Content/bootstrap4_1_1.min.js"></script>
     <script src="~/Content/jquery3_2_1.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link href="~/Content/StyleSheet.css" rel="stylesheet" />
+    <link href="~/Content/LoginForm.css" rel="stylesheet" />
     <script type="text/javascript">
-        $(document).ready(function () {
-            $.ajax({
-                type: 'POST',
-                URL: '/Login/Index',
-                data: data,
-                dataType: 'JSON',
-                success: function (data) {
-                    datadata = data.status
-                    if (Status == "1") {
-                        window.location.href = '@Url.Action("Index","Login")';
+        function fnLoginUser() {
+            var bFlag = true;
+            $("#lblMessage").hide();
+
+            if ($("#UserName").val() == "") {
+                bFlag = false;
+                $("#UserName").css("border-color", "orangered");
+            }
+
+            if ($("#Password").val() == "") {
+                bFlag = false;
+                $("#Password").css("border-color", "orangered");
+            }
+
+            if (bFlag) {
+                var userObj = {
+                    UserName: $('#UserName').val(),
+                    UserPassword: $('#Password').val()
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Login/LoginUser',
+                    data: JSON.stringify(userObj),
+                    contentType: "application/json;charset=utf-8",
+                    dataType: 'json',
+                    success: function (result) {
+                        sessionStorage.setItem("User", result.User);
+                        var url = '@Url.Action("Index", "Product")';
+                        window.location.href = url;
                     }
-                }
-            });
-        });
+                });
+            }
+            else {
+                $("#lblMessage").text("Please fill out the mandatory fields.");
+                $("#lblMessage").css("color", "orangered");
+                $("#lblMessage").show();
+            }
+        };
+
+        function fnSignup() {
+            var url = '@Url.Action("Index", "User")';
+            window.location.href = url;
+        };
     </script>
 </head>
 <body>
-    @using (Html.BeginForm("Index", "Login", FormMethod.Post))
-    {
-        @Html.AntiForgeryToken()
-        <div class="container register">
-            <div class="row">
-                <div class="col-md-5 register-left">
-                    <img src="~/Content/clipart1364843.png" alt="" />
-                    <h3>Welcome to ShopBridge!</h3>
-                    <p>
-                        You can enroll yourself by filling up the form alongside. Already enrolled? Can proceed with login.
-                    </p>
+    @Html.AntiForgeryToken()
+    <header class="header">
+        <nav class="navbar navbar-expand-lg navbar-light py-3">
+            <div class="container text-center">
+                <h1><p class="text-muted font-weight-bold">Admin Login</p></h1>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid px-1 px-md-5 px-lg-1 px-xl-5 py-5 mx-auto">
+        <div class="card card0 border-0">
+            <div class="row d-flex">
+                <div class="col-lg-6">
+                    <div class="card1 pb-5">
+                        <div class="row px-3 justify-content-center mt-4 mb-5 border-line"> <img src="~/Content/ECommerceSmall.png" class="image"> </div>
+                    </div>
                 </div>
-                <div class="col-md-7 register-right">
-                    <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="../User/Index" role="tab" aria-controls="home" aria-selected="true">Register</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="../Login/Index" role="tab" aria-controls="profile" aria-selected="false">Login</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                            <h3 class="register-heading">Admin Login</h3>
-                            <div class="row register-form">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.TextBoxFor(e => e.UserName, new { @class = "form-control", placeholder = "User Name *" })
-                                        @Html.ValidationMessageFor(e => e.UserName)
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.PasswordFor(e => e.UserPassword, new { id = "Password", @class = "form-control", placeholder = "Password *" })
-                                        <span id="result"></span>
-                                        @Html.ValidationMessageFor(e => e.UserPassword)
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="submit" class="btnLogin" value="Login" />
-                                    </div>
+                <div class="col-lg-6">
+                    <div class="card2 card border-0 px-4 py-5">
+                        <div class="row px-3">
+                            <div class="input-group col-lg-6 mb-4">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                        <i class="fa fa-user text-muted"></i>
+                                    </span>
                                 </div>
+                                <input id="UserName" type="text" name="UserName" placeholder="User Name *" class="form-control bg-white border-left-0 border-md">
+                            </div>
+                        </div>
+                        <div class="row px-3">
+                            <div class="input-group col-lg-6 mb-4">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                        <i class="fa fa-key text-muted"></i>
+                                    </span>
+                                </div>
+                                <input id="Password" type="password" name="Password" placeholder="Password *" class="form-control bg-white border-left-0 border-md">
+                            </div>
+                        </div>
+                        <div class="row px-3 mb-4">
+                            <label id="lblMessage"></label>
+                        </div>
+                        <div class="row mb-3 px-3">
+                            <div class="form-group col-lg-12 mx-auto mb-0">
+                                <a href="#" style="width:48%;" class="btn btn-primary btn-block py-2" onclick="fnLoginUser();">
+                                    <span class="font-weight-bold">Login</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row mb-4 px-3">
+                            <div class="w-100" style="margin-left:15px;">
+                                <p class="text-muted font-weight-bold">Don't have an account? <a href="#" class="text-primary ml-2" onclick="fnSignup();">Register</a></p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <script type="text/javascript">
-                $(function () {
-                    var msg = '@ViewData["Result"]';
-                    if (msg == '1') {
-                        alert("User Details Inserted Successfully");
-                        window.location.href = "@Url.Action("Index", "Login")";
-                    }
-                });
-            </script>
+            <div class="bg-blue py-4">
+                <div class="row px-3">
+                    <small class="ml-4 ml-sm-5 mb-2">Copyright &copy; @DateTime.Now.Year.ToString(). ShopBridge.</small>
+                </div>
+            </div>
         </div>
-    }
+    </div>
 </body>
 </html>

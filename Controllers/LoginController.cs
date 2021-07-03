@@ -13,6 +13,8 @@ namespace ShopBridge.Controllers
 {
     public class LoginController : Controller
     {
+        DBHelper objDBHelper = new DBHelper();
+
         // GET: Login
         public string Status;
         public ActionResult Index()
@@ -20,38 +22,21 @@ namespace ShopBridge.Controllers
             return View();
         }
 
-        [HttpPost]
-        public ActionResult Index(UserModel e)
+        public JsonResult LoginUser(UserModel objUser)
         {
-            String SqlCon = ConfigurationManager.ConnectionStrings["ConnDB"].ConnectionString;
-            SqlConnection con = new SqlConnection(SqlCon);
-            string SqlQuery = "select Email,Password from Enrollment where Email=@Email and Password=@Password";
-            con.Open();
-            SqlCommand cmd = new SqlCommand(SqlQuery, con); ;
-            cmd.Parameters.AddWithValue("@UserName", e.UserName);
-            cmd.Parameters.AddWithValue("@UserPassword", e.UserPassword);
-            SqlDataReader sdr = cmd.ExecuteReader();
-            if (sdr.Read())
+            var User = objDBHelper.GetUsers().Find(x => x.UserName.Equals(objUser.UserName) && x.UserPassword.Equals(objUser.UserPassword));
+
+            if (User != null)
             {
-                Session["UserName"] = e.UserName.ToString();
-                return RedirectToAction("Welcome");
-            }
-            else
-            {
-                ViewData["Message"] = "User Login Details Failed!!";
-            }
-            if (e.UserName.ToString() != null)
-            {
-                Session["UserName"] = e.UserName.ToString();
-                Status = "1";
-            }
-            else
-            {
-                Status = "3";
+                if (!string.IsNullOrEmpty(User.UserName))
+                {
+                    FormsAuthentication.SetAuthCookie(User.UserName, false);
+                    Session["UserName"] = User.FirstName + " " + User.LastName;
+                    Session["User"] = User.UserName;
+                }
             }
 
-            con.Close();
-            return View();
+            return Json(User, JsonRequestBehavior.AllowGet);
         }
 
         //[HttpGet]

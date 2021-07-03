@@ -1,0 +1,114 @@
+﻿@model ShopBridge.Models.ProductModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Product</title>
+    <script src="~/Content/jquery3_2_1.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    @*<link href="~/Content/bootstrap4_1_1.min.css" rel="stylesheet" id="bootstrap-css" />
+        <script src="~/Content/bootstrap-4_1_1.js"></script>*@
+    <script src="~/Content/Product.js"></script>
+    <script type="text/javascript">
+        //Load Data in Table when documents is ready
+        $(document).ready(function () {
+            if (sessionStorage.getItem("User") != null && sessionStorage.getItem("User") != "" && sessionStorage.getItem("User") != undefined) {
+                loadData();
+            }
+            else {
+                var url = '@Url.Action("Index", "Login")';
+                window.location.href = url;
+            }
+        });
+
+        function fnLogout() {
+            var url = '@Url.Action("Logout", "Product")';
+            window.location.href = url;
+        };
+    </script>
+</head>
+<body style="background-image:url(../../Content/ShopBridgeBG.jpg);">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <button id="btnLogout" style="float:right; margin-top:5px;" type="button" class="btn btn-primary" onclick="fnLogout();">Logout</button>
+            </div>
+        </div>
+        <br />
+        <h4>Welcome, <label>@Session["UserName"].ToString()</label></h4>
+        <br />
+        <h2>Product Listing</h2>
+        <br />
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="clearTextBox();">Add New Product</button>
+        <br /><br />
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        Product Name
+                    </th>
+                    <th>
+                        Product Description
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="tbody">
+            </tbody>
+        </table>
+
+        <footer>
+            <p>&copy; @DateTime.Now.Year - ShopBridge Application</p>
+        </footer>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Add Product</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group" style="display:none;">
+                            <label for="ProductID">Product ID</label>
+                            <input type="text" class="form-control" id="ProductID" placeholder="Product ID" disabled="disabled" />
+                        </div>
+                        <div class="form-group">
+                            <label for="ProductName">Product Name</label>
+                            <input type="text" class="form-control" id="ProductName" placeholder="Product Name *" />
+                        </div>
+                        <div class="form-group">
+                            <label for="ProductDescription">Product Description</label>
+                            <input type="text" class="form-control" id="ProductDescription" placeholder="Product Description *" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Price">Price</label>
+                            <input type="text" class="form-control" id="Price" placeholder="Price *" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g, '');" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnAdd" onclick="return Add();">Add</button>
+                    <button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="Update();">Update</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
