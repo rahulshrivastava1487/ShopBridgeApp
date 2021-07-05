@@ -14,3 +14,11 @@ In this application we have below modules
 To run the application
 
 => You need to download the entire code, then build the solution and run the application
+
+I have used the following technologies in the ShopBridgeAPI project
+
+ASP .NET MVC
+SQL Server
+jQuery
+CSS
+Bootstrap
